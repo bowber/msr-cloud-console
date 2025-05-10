@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Component, createSignal } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
-import { open, OpenDialogOptions } from '@tauri-apps/plugin-dialog';
+// import { open, OpenDialogOptions } from '@tauri-apps/plugin-dialog';
 import { BaseButton } from "./base-button";
 
 export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
@@ -40,29 +40,29 @@ export const PasswordInput: Component<InputProps> = (props) => {
   )
 }
 
-interface FilePathInputProps extends InputProps {
-  openDialogOptions?: () => OpenDialogOptions | Promise<OpenDialogOptions>
-}
-export const FilePathInput: Component<FilePathInputProps> = (props) => {
-  const [value, setValue] = createSignal("")
-  return (
-    <Input
-      class={clsx(
-        "cursor-pointer",
-        props.class
-      )}
-      readOnly
-      value={value()}
-      onClick={async () => {
-        const file = await open({
-          multiple: false,
-          directory: false,
-          ...(await props.openDialogOptions?.())
-        });
-        setValue(file ?? "")
-      }}
-      placeholder="Select Path"
-      {...props}
-    />
-  )
-}
+// interface FilePathInputProps extends InputProps {
+//   openDialogOptions?: () => OpenDialogOptions | Promise<OpenDialogOptions>
+// }
+// export const FilePathInput: Component<FilePathInputProps> = (props) => {
+//   const [value, setValue] = createSignal("")
+//   return (
+//     <Input
+//       class={clsx(
+//         "cursor-pointer",
+//         props.class
+//       )}
+//       readOnly
+//       value={value()}
+//       onClick={async () => {
+//         const file = await open({
+//           multiple: false,
+//           directory: false,
+//           ...(await props.openDialogOptions?.())
+//         });
+//         setValue(file ?? "")
+//       }}
+//       placeholder="Select Path"
+//       {...props}
+//     />
+//   )
+// }

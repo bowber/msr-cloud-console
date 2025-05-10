@@ -8,7 +8,7 @@ export const TitleBar = () => {
       class="w-full h-10 flex justify-end bg-primary-500"
     >
       <a class="h-full aspect-square pl-2" href="/">
-        <img src="/logo.png" alt="logo" class="h-full" />
+        <img src="/logo.svg" alt="logo" class="h-full" />
       </a>
       <a
         class="h-full ml-7 pl-2 flex gap-1 justify-center items-center"

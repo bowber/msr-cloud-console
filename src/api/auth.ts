@@ -12,6 +12,22 @@ export const exchangeRefreshToken = (csrf_token: string) => {
       return z
         .object({
           refresh_token: z.string(),
+          access_token: z.string(),
+        })
+        .or(errorResponseSchema)
+        .parse(res.data)
+    })
+}
+
+export const refreshAccessToken = (refresh_token: string) => {
+  return createAuthApi()
+    .post('/auth/refresh-token', {
+      refresh_token,
+    })
+    .then((res) => {
+      return z
+        .object({
+          access_token: z.string(),
         })
         .or(errorResponseSchema)
         .parse(res.data)

@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/solid-query'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import ArraySupport from 'dayjs/plugin/arraySupport'
 import dayjs from 'dayjs'
-import { UIControllerProvider } from './contexts/ui-controller'
 dayjs.extend(RelativeTime)
 dayjs.extend(ArraySupport)
 
@@ -22,10 +21,8 @@ const queryClient = new QueryClient({
 render(
   () => (
     <QueryClientProvider client={queryClient}>
-      <UIControllerProvider>
-        <SolidQueryDevtools />
-        <App />
-      </UIControllerProvider>
+      <SolidQueryDevtools />
+      <App />
     </QueryClientProvider>
   ),
   document.getElementById('root') as HTMLElement
