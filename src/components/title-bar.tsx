@@ -1,7 +1,7 @@
-import { BaseButton } from './share/base-button'
-import toast from 'solid-toast'
+import { useAuth } from "../contexts/auth"
 
 export const TitleBar = () => {
+  const auth = useAuth()
   return (
     <div
       data-tauri-drag-region
@@ -14,21 +14,15 @@ export const TitleBar = () => {
         class="h-full ml-7 pl-2 flex gap-1 justify-center items-center"
         href="/"
       >
-        <span class="text-xl font-bold">Cluster 001</span>
+        <span class="text-xl font-bold">MSR Cloud</span>
       </a>
       <a
         class="h-full ml-7 mr-auto pl-2 flex gap-1 justify-center items-center"
         href="/"
       >
-        <span class="text-sm">Cluster IP:</span>
-        <span class="font-bold">192.168.1.1</span>
+        <span class="text-sm">{auth.user()?.name ?? auth.user()?.email ?? " "}</span>
+        <span class="font-bold"></span>
       </a>
-      <BaseButton
-        onClick={() => toast('Coming soon 🚧')}
-        class="h-[90%] my-auto rounded-full border-2 border-black flex justify-center items-center aspect-square mr-12"
-      >
-        •ᴗ•
-      </BaseButton>
-    </div>
+    </div >
   )
 }

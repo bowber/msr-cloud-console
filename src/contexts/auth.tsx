@@ -1,14 +1,23 @@
-import { createContext, createEffect, createSignal, onCleanup, ParentComponent, useContext } from "solid-js";
+import { createContext, createEffect, createMemo, createSignal, onCleanup, ParentComponent, useContext } from "solid-js";
 import { exchangeRefreshToken, refreshAccessToken, startSignInWithGoogle } from "../api/auth";
 import dayjs from "dayjs";
-import { getJwtExp } from "../utils/jwt";
+import { getJwtClaims, getJwtExp } from "../utils/jwt";
 import toast from "solid-toast";
+import { makePersisted } from "@solid-primitives/storage";
 
 interface AuthContextData {
   isAuthenticated: () => boolean
   signInWithGoogle: () => void
   logout: () => void
   getAccessToken: () => Promise<{ access_token: string }>
+  user: () => Partial<UserInfo> | undefined
+  rememberMe: () => boolean
+  setRememberMe: (value: boolean) => void
+}
+
+interface UserInfo {
+  name: string
+  email: string
 }
 
 const AuthContext = createContext<AuthContextData | null>(null);
@@ -24,8 +33,17 @@ export const useAuth = () => {
 
 export const AuthProvider: ParentComponent = (props) => {
   const [crsfToken, setCrsfToken] = createSignal<string>()
-  const [refreshToken, setRefreshToken] = createSignal<string>()
+  const [refreshToken, setRefreshToken] = makePersisted(createSignal<string>(), { name: 'refresh_token', storage: localStorage })
   const [accessToken, setAccessToken] = createSignal<string>()
+  const [rememberMe, setRememberMe] = createSignal(false)
+
+  const user = createMemo(() => {
+    const token = refreshToken()
+    if (token === undefined) return
+    const claims = getJwtClaims(token)
+    return claims as Partial<UserInfo>
+  })
+
 
   const isAuthenticated = () => {
     return refreshToken() !== undefined
@@ -90,7 +108,7 @@ export const AuthProvider: ParentComponent = (props) => {
   })
 
   const signInWithGoogle = () => {
-    startSignInWithGoogle().then(async (res) => {
+    startSignInWithGoogle({ rememberMe: rememberMe() }).then(async (res) => {
       console.log(res)
       setCrsfToken(res.csrf_token)
       toast('Redirecting to Google login', { duration: 2000 })
@@ -110,7 +128,10 @@ export const AuthProvider: ParentComponent = (props) => {
         isAuthenticated,
         signInWithGoogle,
         logout,
-        getAccessToken
+        getAccessToken,
+        user,
+        rememberMe,
+        setRememberMe
       }}
     >
       {props.children}

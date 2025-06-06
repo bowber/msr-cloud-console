@@ -1,8 +1,12 @@
 import { useLocation } from '@solidjs/router'
 import clsx from 'clsx'
 import { createEffect } from 'solid-js'
+import toast from 'solid-toast'
+import { BaseButton } from './share/base-button'
+import { useAuth } from '../contexts/auth'
 
 export const Sidebar = () => {
+  const auth = useAuth()
   return (
     <div class="w-12 h-svh bg-primary-200 border-r-1 border-primary-300 z-10">
       {/* Handle */}
@@ -14,6 +18,8 @@ export const Sidebar = () => {
           tooltip="Scripts Runner"
         />
         <NavLink icon="/icons/network.svg" link="/network" tooltip="Network" />
+        <NavLink icon="/icons/user.svg" link="/account" tooltip="Account" />
+
       </div>
     </div>
   )

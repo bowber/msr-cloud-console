@@ -34,9 +34,13 @@ export const refreshAccessToken = (refresh_token: string) => {
     })
 }
 
-export const startSignInWithGoogle = async () => {
+export const startSignInWithGoogle = async (params: {
+  rememberMe: boolean
+}) => {
   return createAuthApi()
-    .get('auth/google/login')
+    .get('auth/google/login', {
+      params,
+    })
     .then((res) => {
       return z
         .object({

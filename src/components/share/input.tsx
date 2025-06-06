@@ -11,7 +11,7 @@ export const Input: Component<InputProps> = (props) => {
     <input
       {...props}
       class={clsx(
-        'border-2 border-primary-900 p-1 rounded-lg text-center',
+        'border-2 border-primary-900 p-1 rounded-lg text-center placeholder:text-primary-500',
         props.class
       )}
     >
