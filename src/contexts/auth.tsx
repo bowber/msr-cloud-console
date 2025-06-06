@@ -9,7 +9,7 @@ interface AuthContextData {
   isAuthenticated: () => boolean
   signInWithGoogle: () => void
   logout: () => void
-  getAccessToken: () => Promise<{ access_token: string }>
+  getAccessToken: () => Promise<string>
   user: () => Partial<UserInfo> | undefined
   rememberMe: () => boolean
   setRememberMe: (value: boolean) => void
@@ -56,17 +56,15 @@ export const AuthProvider: ParentComponent = (props) => {
     // Check if the refresh token is undefined
     if (refreshTokenValue === undefined) throw new Error('Please login')
     // Refresh the access token if it is undefined
-    if (accessTokenValue === undefined) return refreshAccessToken(refreshTokenValue)
+    if (accessTokenValue === undefined) return (await refreshAccessToken(refreshTokenValue)).access_token
     // Refresh the access token if it is expired
     const exp = getJwtExp(accessTokenValue)
-    if (exp === undefined) return refreshAccessToken(refreshTokenValue)
+    if (exp === undefined) return (await refreshAccessToken(refreshTokenValue)).access_token
     // Refresh the access token if it is expired
     const duration = exp.diff(dayjs(), 'millisecond')
-    if (duration < 0) return refreshAccessToken(refreshTokenValue)
+    if (duration < 0) return (await refreshAccessToken(refreshTokenValue)).access_token
     // Else return the access token
-    return {
-      access_token: accessTokenValue,
-    }
+    return accessTokenValue
   }
   // Create a timeout to remove the refresh token after it expires
   createEffect<number | undefined>((lastTimeout) => {

@@ -1,4 +1,3 @@
-import { createSignal } from "solid-js"
 import { useAuth } from "../../contexts/auth"
 import { Button } from "../share/button"
 import { Input, PasswordInput } from "../share/input"
